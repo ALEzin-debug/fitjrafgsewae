@@ -155,7 +155,7 @@ const Student = {
     const overlay = document.getElementById('rest-timer-overlay');
     const display = document.getElementById('rest-timer-display');
     const bar = document.getElementById('rest-timer-bar');
-    if (!overlay || !display || !bar) return;
+    if (!overlay) return;
 
     // Clear any existing timer
     this.stopRestTimer();
@@ -164,9 +164,18 @@ const Student = {
     const total = seconds;
 
     overlay.classList.remove('hidden');
-    bar.style.width = '100%';
+    // The bar width will be set by updateDisplay initially
 
     const updateDisplay = () => {
+      const display = document.getElementById('rest-timer-display');
+      const bar = document.getElementById('rest-timer-bar');
+      
+      // Auto-clear interval if the user navigated away from the page
+      if (!display || !bar) {
+        this.stopRestTimer();
+        return;
+      }
+      
       const mins = Math.floor(remaining / 60);
       const secs = remaining % 60;
       display.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
