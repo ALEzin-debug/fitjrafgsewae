@@ -7,7 +7,7 @@ node_modules/
 .env.*.local
 
 # Build output
-js/config.js
+# (removed js/config.js to allow pushing the public key)
 
 # OS files
 .DS_Store
