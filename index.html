@@ -67,11 +67,31 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <!-- App Scripts -->
-  <script src="/js/config.js?v=2"></script>
-  <script src="/js/supabase.js?v=2"></script>
-  <script src="/js/auth.js?v=2"></script>
-  <script src="/js/personal.js?v=2"></script>
-  <script src="/js/student.js?v=2"></script>
-  <script src="/js/app.js?v=2"></script>
+  <script src="/js/config.js?v=3"></script>
+  <script src="/js/supabase.js?v=3"></script>
+  <script src="/js/auth.js?v=3"></script>
+  <script src="/js/personal.js?v=3"></script>
+  <script src="/js/student.js?v=3"></script>
+  <script src="/js/app.js?v=3"></script>
+
+  <!-- Auto Cache & SW Killer para garantir atualização para clientes -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(function(registrations) {
+        let hasSW = registrations.length > 0;
+        for(let registration of registrations) {
+          registration.unregister(); // Mata qualquer SW antigo
+        }
+        if (hasSW && !sessionStorage.getItem('sw-deleted')) {
+          sessionStorage.setItem('sw-deleted', 'true');
+          caches.keys().then(keys => {
+            Promise.all(keys.map(k => caches.delete(k))).then(() => {
+              window.location.reload(true); // Força recarregamento limpo
+            });
+          });
+        }
+      });
+    }
+  </script>
 </body>
 </html>
